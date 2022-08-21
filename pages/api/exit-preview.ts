@@ -5,7 +5,7 @@ type Data = {
   name: string;
 };
 
-export default function handler(_, res: NextApiResponse<Data>) {
+export default function handler(_: void, res: NextApiResponse<Data>) {
   // Exit the current user from "Preview Mode". This function accepts no args.
   res.clearPreviewData();
 
