@@ -59,13 +59,13 @@ export const Index: React.FC<Props> = ({ preview }) => {
               return (
                 <SwiperSlide key={index}>
                   <Card image={image}>
-                    <h2 className={cn('font-semibold text-7xl text-center mb-10', color)}>{title}</h2>
+                    <h2 className={cn('font-semibold lg:text-7xl text-5xl text-center mb-10', color)}>{title}</h2>
                     <ul>
                       {workouts.map(workout => (
                         <li key={workout.title}>
-                          <div className='flex justify-between'>
-                            <span className='font-semibold text-4xl mr-5'>{workout.title}</span>
-                            <span className='font-semibold text-3xl'>{workout.description}</span>
+                          <div className='flex items-center justify-between'>
+                            <span className='font-semibold lg:text-4xl text-3xl mr-5'>{workout.title}</span>
+                            <span className='font-semibold lg:text-3xl text-2xl'>{workout.description}</span>
                           </div>
                           <hr className='border-yellow-300 my-5 mx-5' />
                         </li>
