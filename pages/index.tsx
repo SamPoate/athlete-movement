@@ -6,6 +6,10 @@ import { useGetClassesQuery } from '@redux/slices/classesApi';
 import Container from '@components/Container';
 import Layout from '@components/Layout';
 import Card from '@components/Card';
+import huckle from '@image/beautiful-huckle.jpg';
+import highFive from '@image/high-five.jpg';
+import plates from '@image/plates.jpg';
+import totallyNotADickShot from '@image/totally-not-a-dick-shot.jpg';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import 'swiper/css/effect-cards';
@@ -36,6 +40,7 @@ export const Index: React.FC<Props> = ({ preview }) => {
           >
             {data?.data.map(({ attributes: { title, workouts } }, index) => {
               let color = 'text-white';
+              let image = huckle;
 
               switch (title) {
                 case 'Sweatcon':
@@ -43,15 +48,17 @@ export const Index: React.FC<Props> = ({ preview }) => {
                   break;
                 case 'Metcon':
                   color = 'text-blue-300';
+                  image = plates;
                   break;
                 case 'Metstrong':
                   color = 'text-red-600';
+                  image = totallyNotADickShot;
                   break;
               }
 
               return (
                 <SwiperSlide key={index}>
-                  <Card>
+                  <Card image={image}>
                     <h2 className={cn('font-semibold text-7xl text-center mb-10', color)}>{title}</h2>
                     <ul>
                       {workouts.map(workout => (
