@@ -4,7 +4,7 @@ import { HYDRATE } from 'next-redux-wrapper';
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://sleepy-mountain-56999.herokuapp.com/api/'
+    baseUrl: 'https://athlete-movement.herokuapp.com/api/'
   }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
