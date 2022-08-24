@@ -4,7 +4,10 @@ import { HYDRATE } from 'next-redux-wrapper';
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://athlete-movement.herokuapp.com/api/'
+    baseUrl:
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:1337/api/'
+        : 'https://athlete-movement.herokuapp.com/api/'
   }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {

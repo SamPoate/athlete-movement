@@ -2,7 +2,8 @@ type Class = BaseResponse<{
   title: string;
   description: string;
   workouts: {
-    title: string;
-    description: string;
+    column_one: string;
+    column_two: string;
+    column_three: string;
   }[];
 }>;

@@ -3,8 +3,10 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { createWrapper } from 'next-redux-wrapper';
 import { api } from './slices';
+import appSlice from './slices/appSlice';
 
 const reducers = {
+  [appSlice.name]: appSlice.reducer,
   [api.reducerPath]: api.reducer
 };
 

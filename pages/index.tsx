@@ -2,7 +2,9 @@ import Head from 'next/head';
 import cn from 'classnames';
 import { Autoplay, EffectCoverflow } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useTypedDispatch, useTypedSelector } from '@redux/store';
 import { useGetClassesQuery } from '@redux/slices/classesApi';
+import { setCard } from '@redux/slices/appSlice';
 import Container from '@components/Container';
 import Layout from '@components/Layout';
 import Card from '@components/Card';
@@ -19,7 +21,32 @@ interface Props {
 }
 
 export const Index: React.FC<Props> = ({ preview }) => {
+  const card = useTypedSelector(state => state.app.card);
+
   const { data } = useGetClassesQuery();
+
+  const dispatch = useTypedDispatch();
+
+  if (!card) {
+    return (
+      <Layout preview={preview}>
+        <Head>
+          <title>Athlete Movement Classes</title>
+        </Head>
+        <Container className='flex justify-between'>
+          {data?.data.map(({ attributes: { title } }, index) => (
+            <button
+              key={index}
+              className='relative h-full px-10 py-4 bg-neutral-700 hover:bg-neutral-400 cursor-pointer shadow-md rounded-md overflow-hidden'
+              onClick={() => dispatch(setCard(title?.toLowerCase()))}
+            >
+              {title}
+            </button>
+          ))}
+        </Container>
+      </Layout>
+    );
+  }
 
   return (
     <>
@@ -61,11 +88,16 @@ export const Index: React.FC<Props> = ({ preview }) => {
                   <Card image={image}>
                     <h2 className={cn('font-semibold lg:text-7xl text-5xl text-center mb-10', color)}>{title}</h2>
                     <ul>
-                      {workouts.map(workout => (
-                        <li key={workout.title}>
-                          <div className='flex items-center justify-between'>
-                            <span className='font-semibold lg:text-4xl text-3xl mr-5'>{workout.title}</span>
-                            <span className='font-semibold lg:text-3xl text-2xl'>{workout.description}</span>
+                      {workouts.map((workout, i) => (
+                        <li key={i}>
+                          <div className='flex justify-between columns-3'>
+                            <p className='w-1/5 font-semibold lg:text-4xl text-3xl mr-5'>{workout.column_one}</p>
+                            <p className='w-2/5 pl-2 font-semibold lg:text-3xl text-2xl whitespace-pre-wrap'>
+                              {workout.column_two}
+                            </p>
+                            <p className='w-2/5 pl-2 font-semibold lg:text-3xl text-2xl lg:leading-relaxed leading-relaxed whitespace-pre-wrap '>
+                              {workout.column_three}
+                            </p>
                           </div>
                           <hr className='border-yellow-300 my-5 mx-5' />
                         </li>
