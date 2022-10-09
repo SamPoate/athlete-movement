@@ -13,9 +13,6 @@ import highFive from '@image/high-five.jpg';
 import plates from '@image/plates.jpg';
 import kettlebells from '@image/kettlebells.jpg';
 import totallyNotADickShot from '@image/totally-not-a-dick-shot.jpg';
-import 'swiper/css';
-import 'swiper/css/autoplay';
-import 'swiper/css/effect-cards';
 
 interface Props {
   preview: any;
