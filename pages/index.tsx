@@ -3,7 +3,7 @@ import Image from 'next/image';
 import cn from 'classnames';
 import { useTypedDispatch, useTypedSelector } from '@redux/store';
 import { useGetClassesQuery } from '@redux/slices/classesApi';
-import { setCard } from '@redux/slices/appSlice';
+import { setCardId } from '@redux/slices/appSlice';
 import Container from '@components/Container';
 import Layout from '@components/Layout';
 import Card from '@components/Card';
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const Home: React.FC<Props> = ({ preview }) => {
-  const card = useTypedSelector(state => state.app.card);
+  const cardId = useTypedSelector(state => state.app.cardId);
 
   const { data } = useGetClassesQuery(undefined, {
     refetchOnFocus: true,
@@ -27,6 +27,8 @@ export const Home: React.FC<Props> = ({ preview }) => {
   });
 
   const dispatch = useTypedDispatch();
+
+  const card = data?.data.find(item => item.id === cardId);
 
   const getClassStyles = (title?: string) => {
     let color = 'text-white';
@@ -93,7 +95,7 @@ export const Home: React.FC<Props> = ({ preview }) => {
                   className={cn(
                     'relative flex justify-center items-center w-[calc(50%_-_1rem)] px-16 pt-8 pb-10 mb-8 bg-neutral-700 hover:bg-neutral-400 cursor-pointer shadow-md rounded-md overflow-hidden'
                   )}
-                  onClick={() => dispatch(setCard(item))}
+                  onClick={() => dispatch(setCardId(item.id))}
                 >
                   <Image src={image} alt='background' layout='fill' objectFit='cover' objectPosition='center' />
                   <div className='absolute bg-neutral-900 opacity-80 inset-0 z-0' />

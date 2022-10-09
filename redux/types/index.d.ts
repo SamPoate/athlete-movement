@@ -16,7 +16,7 @@ interface BaseAttributes {
 
 interface BaseResponse<T> {
   data: {
-    id: string;
+    id: number;
     attributes: BaseAttributes & T;
   }[];
   meta: MetaResponse;

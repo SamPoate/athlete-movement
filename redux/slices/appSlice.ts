@@ -1,23 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AppState {
-  card: Item | null;
+  cardId: number | null;
 }
 
 const initialState: AppState = {
-  card: null
+  cardId: null
 };
 
 export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setCard: (state, { payload }: PayloadAction<Item | null>) => {
-      state.card = payload;
+    setCardId: (state, { payload }: PayloadAction<number | null>) => {
+      state.cardId = payload;
     }
   }
 });
 
-export const { setCard } = appSlice.actions;
+export const { setCardId } = appSlice.actions;
 
 export default appSlice;

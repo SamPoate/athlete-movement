@@ -1,4 +1,4 @@
-import { setCard } from '@redux/slices/appSlice';
+import { setCardId } from '@redux/slices/appSlice';
 import { useTypedDispatch } from '@redux/store';
 import Container from './Container';
 
@@ -15,7 +15,7 @@ export const Footer: React.FC<FooterProps> = () => {
             Athlete Movement
           </a>
         </p>
-        <button className='flex-1 text-center' onClick={() => dispatch(setCard(null))}>
+        <button className='flex-1 text-center' onClick={() => dispatch(setCardId(null))}>
           Home
         </button>
         <p className='text-right flex-1'>
