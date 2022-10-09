@@ -14,7 +14,6 @@ export const api = createApi({
       return action.payload[reducerPath];
     }
   },
-  refetchOnMountOrArgChange: 900,
   tagTypes: ['Classes'],
   endpoints: () => ({})
 });

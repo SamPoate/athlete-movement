@@ -24,7 +24,10 @@ interface Props {
 export const Home: React.FC<Props> = ({ preview }) => {
   const card = useTypedSelector(state => state.app.card);
 
-  const { data } = useGetClassesQuery();
+  const { data } = useGetClassesQuery(undefined, {
+    refetchOnFocus: true,
+    refetchOnReconnect: true
+  });
 
   const dispatch = useTypedDispatch();
 
