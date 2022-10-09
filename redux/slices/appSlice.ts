@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AppState {
-  card: string | null;
+  card: Item | null;
 }
 
 const initialState: AppState = {
@@ -12,7 +12,7 @@ export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setCard: (state, { payload }: PayloadAction<string | null>) => {
+    setCard: (state, { payload }: PayloadAction<Item | null>) => {
       state.card = payload;
     }
   }

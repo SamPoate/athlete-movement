@@ -15,6 +15,7 @@ export const api = createApi({
     }
   },
   refetchOnMountOrArgChange: 900,
+  tagTypes: ['Classes'],
   endpoints: () => ({})
 });
 

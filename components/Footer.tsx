@@ -8,17 +8,17 @@ export const Footer: React.FC<FooterProps> = () => {
   const dispatch = useTypedDispatch();
 
   return (
-    <footer className='bg-neutral-700'>
+    <footer className='bg-neutral-700 z-10'>
       <Container className='flex justify-between text-xs'>
-        <p className='text-center'>
+        <p className='flex-1'>
           <a href='https://athletemovement.com' className='hover:underline' target='_blank' rel='noreferrer'>
             Athlete Movement
           </a>
         </p>
-        <p>
-          <button onClick={() => dispatch(setCard(null))}>Home</button>
-        </p>
-        <p className='text-center'>
+        <button className='flex-1 text-center' onClick={() => dispatch(setCard(null))}>
+          Home
+        </button>
+        <p className='text-right flex-1'>
           Made with love by{' '}
           <a
             href='https://sampoate.com'
