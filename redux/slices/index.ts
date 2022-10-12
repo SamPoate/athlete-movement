@@ -5,7 +5,7 @@ export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl:
-      process.env.NODE_ENV === 'development'
+      process.env.NODE_ENV !== 'development'
         ? 'http://localhost:1337/api/'
         : 'https://athlete-movement.herokuapp.com/api/'
   }),

@@ -34,27 +34,27 @@ export const Home: React.FC<Props> = ({ preview }) => {
     let color = 'text-white';
     let image = huckle;
 
-    switch (title) {
-      case 'Sweatcon':
+    switch (title?.toLowerCase()) {
+      case 'sweatcon':
         color = 'text-am-yellow';
         break;
-      case 'Metcon':
+      case 'metcon':
         color = 'text-am-blue';
         image = plates;
         break;
-      case 'Metstrong':
+      case 'metstrong':
         color = 'text-am-red';
         image = totallyNotADickShot;
         break;
-      case 'Academy':
+      case 'academy':
         color = 'text-blue-300';
         image = plates;
         break;
-      case 'Weightlifting':
+      case 'weightlifting':
         color = 'text-red-600';
         image = kettlebells;
         break;
-      case 'Barbellas':
+      case 'barbellas':
         color = 'text-pink-400';
         image = highFive;
         break;
@@ -118,27 +118,34 @@ export const Home: React.FC<Props> = ({ preview }) => {
           <title>Athlete Movement Classes</title>
         </Head>
         <Card image={cardImage}>
-          <Container>
+          <div className='p-4'>
             <h2 className={cn('font-semibold lg:text-7xl leading-none text-5xl text-center mb-5', cardColor)}>
               {card.attributes.title}
             </h2>
-            <hr className='border-yellow-300 mb-5 mx-auto' />
+            <hr className='border-yellow-300 mb-4 mx-auto' />
             <ul>
-              {card.attributes.workouts.map((workout, i) => (
-                <li key={i}>
-                  <div className='flex justify-between items-center'>
-                    <p className='w-1/3 font-semibold lg:text-5xl text-2xl whitespace-pre-wrap leading-tight'>
-                      {workout.column_one}
-                    </p>
-                    <p className='w-2/3 pl-2 font-semibold lg:text-4xl text-2xl lg:leading-relaxed leading-relaxed whitespace-pre-wrap '>
-                      {workout.column_two}
-                    </p>
-                  </div>
-                  <hr className='border-yellow-300 my-5 mx-5' />
-                </li>
-              ))}
+              {card.attributes.workouts.map(
+                (workout, i) =>
+                  (workout.column_one || workout.column_two) && (
+                    <li key={i} className='mb-4'>
+                      <div className='flex items-center justify-between'>
+                        <div className='w-1/4 mr-12'>
+                          <p className='font-semibold text-2xl lg:text-7xl leading-tight'>{workout.column_one}</p>
+                        </div>
+                        <ul className='w-3/4'>
+                          {workout.column_two.split(/\r?\n/).map((item, index) => (
+                            <li key={index} className='mb-4 font-semibold text-2xl lg:text-8xl leading-tight'>
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <hr className='border-yellow-300 my-3 mx-5' />
+                    </li>
+                  )
+              )}
             </ul>
-          </Container>
+          </div>
         </Card>
       </Layout>
     </>
