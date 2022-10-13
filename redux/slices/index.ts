@@ -6,7 +6,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl:
       process.env.NODE_ENV !== 'development'
-        ? 'http://localhost:1337/api/'
+        ? 'https://athlete-movement.herokuapp.com/api/' // 'http://localhost:1337/api/'
         : 'https://athlete-movement.herokuapp.com/api/'
   }),
   extractRehydrationInfo(action, { reducerPath }) {
