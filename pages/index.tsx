@@ -129,18 +129,31 @@ export const Home: React.FC<Props> = ({ preview }) => {
                   (workout.column_one || workout.column_two) && (
                     <li key={i} className='mb-4'>
                       <div className='flex items-center justify-between'>
-                        <div className='w-1/4 mr-12'>
-                          <p className='font-semibold text-2xl lg:text-7xl leading-tight'>{workout.column_one}</p>
+                        <div className='w-1/4 mr-16'>
+                          <p
+                            className={cn('font-semibold', {
+                              'text-[4.5rem] leading-[4.75rem]': card.attributes.workouts.length < 5,
+                              'text-[3.75rem] leading-[4rem]': card.attributes.workouts.length >= 5
+                            })}
+                          >
+                            {workout.column_one}
+                          </p>
                         </div>
                         <ul className='w-3/4'>
                           {workout.column_two.split(/\r?\n/).map((item, index) => (
-                            <li key={index} className='mb-4 font-semibold text-2xl lg:text-8xl leading-tight'>
+                            <li
+                              key={index}
+                              className={cn('mb-2 font-semibold', {
+                                'text-[5rem] leading-[5.25rem]': card.attributes.workouts.length < 5,
+                                'text-[4rem] leading-[5rem]': card.attributes.workouts.length >= 5
+                              })}
+                            >
                               {item}
                             </li>
                           ))}
                         </ul>
                       </div>
-                      <hr className='border-yellow-300 my-3 mx-5' />
+                      <hr className='border-yellow-300 mt-5 mb-3 mx-5' />
                     </li>
                   )
               )}

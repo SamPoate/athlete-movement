@@ -25,8 +25,8 @@ module.exports = {
       fontSize: {
         '5xl': '3rem',
         '6xl': '3.5rem',
-        '7xl': '4rem',
-        '8xl': '5rem'
+        '7xl': '3.75rem',
+        '8xl': '4rem'
       },
       boxShadow: {
         small: '0 5px 10px rgba(0, 0, 0, 0.12)',
