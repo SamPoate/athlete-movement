@@ -54,7 +54,10 @@ export const Footer: React.FC<FooterProps> = () => {
           <div ref={setArrowElement} style={styles.arrow} />
           <button
             className='text-3xl font-semibold px-4 pt-2 pb-4 min-w-[300px] w-full whitespace-nowrap leading-none hover:bg-neutral-700'
-            onClick={() => document.body.requestFullscreen()}
+            onClick={() => {
+              document.body.requestFullscreen();
+              setShowPopper(false);
+            }}
           >
             Fullscreen
           </button>
