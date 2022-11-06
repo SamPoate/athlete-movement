@@ -1,9 +1,19 @@
-import type { AppProps } from 'next/app';
-import { wrapper } from '../redux/store';
 import '@styles/index.css';
+import type { AppProps } from 'next/app';
+import { Provider } from 'react-redux';
+import { ThemeProvider } from '@material-tailwind/react';
+import { wrapper } from '../redux/store';
 
-function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
-}
+export const App: React.FC<AppProps> = ({ Component, ...rest }) => {
+  const { store, props } = wrapper.useWrappedStore(rest);
 
-export default wrapper.withRedux(App);
+  return (
+    <Provider store={store}>
+      <ThemeProvider>
+        <Component {...props.pageProps} />
+      </ThemeProvider>
+    </Provider>
+  );
+};
+
+export default App;

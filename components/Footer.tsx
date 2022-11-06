@@ -2,8 +2,8 @@ import { useRef, useState } from 'react';
 import { usePopper } from 'react-popper';
 import cn from 'classnames';
 import { useOnClickOutside } from 'usehooks-ts';
-import { setCardId } from '@redux/slices/appSlice';
-import { useTypedDispatch } from '@redux/store';
+import { setCardId, setLayout } from '@redux/slices/appSlice';
+import { useTypedDispatch, useTypedSelector } from '@redux/store';
 import Container from './Container';
 
 interface FooterProps {}
@@ -13,6 +13,8 @@ export const Footer: React.FC<FooterProps> = () => {
   const [referenceElement, setReferenceElement] = useState<HTMLButtonElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
   const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
+
+  const layout = useTypedSelector(state => state.app.layout);
 
   const footerRef = useRef<HTMLDivElement>(null);
 
@@ -53,13 +55,22 @@ export const Footer: React.FC<FooterProps> = () => {
         >
           <div ref={setArrowElement} style={styles.arrow} />
           <button
-            className='text-3xl font-semibold px-4 pt-2 pb-4 min-w-[300px] w-full whitespace-nowrap leading-none hover:bg-neutral-700'
+            className='text-3xl font-semibold px-4 pt-4 pb-5 min-w-[300px] w-full whitespace-nowrap leading-none hover:bg-neutral-700'
             onClick={() => {
               document.body.requestFullscreen();
               setShowPopper(false);
             }}
           >
             Fullscreen
+          </button>
+          <button
+            className='text-3xl font-semibold px-4 pt-4 pb-5 min-w-[300px] w-full whitespace-nowrap leading-none hover:bg-neutral-700'
+            onClick={() => {
+              dispatch(setLayout(layout === 'grid' ? 'list' : 'grid'));
+              setShowPopper(false);
+            }}
+          >
+            Toggle Layout
           </button>
           {/* <p className='text-3xl font-semibold px-4 py-2 min-w-[300px] w-full whitespace-nowrap text-left'>Zoom</p>
           <button

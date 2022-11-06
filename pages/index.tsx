@@ -20,6 +20,7 @@ interface Props {
 
 export const Home: React.FC<Props> = ({ preview }) => {
   const cardId = useTypedSelector(state => state.app.cardId);
+  const layout = useTypedSelector(state => state.app.layout);
 
   const { data } = useGetClassesQuery(undefined, {
     refetchOnFocus: true,
@@ -78,10 +79,13 @@ export const Home: React.FC<Props> = ({ preview }) => {
           <Image
             src={logo}
             alt='Logo'
-            layout='fill'
-            objectFit='contain'
-            objectPosition='center'
             className='opacity-10'
+            style={{
+              objectFit: 'contain',
+              objectPosition: 'center'
+            }}
+            fill
+            priority
           />
         </div>
         <Container className='flex justify-between items-start flex-wrap'>
@@ -97,7 +101,15 @@ export const Home: React.FC<Props> = ({ preview }) => {
                   )}
                   onClick={() => dispatch(setCardId(item.id))}
                 >
-                  <Image src={image} alt='background' layout='fill' objectFit='cover' objectPosition='center' />
+                  <Image
+                    src={image}
+                    alt='background'
+                    style={{
+                      objectFit: 'cover',
+                      objectPosition: 'center'
+                    }}
+                    fill
+                  />
                   <div className='absolute bg-neutral-900 opacity-80 inset-0 z-0' />
                   <p className={cn('text-6xl font-semibold leading-none z-10', color)}>{item.attributes.title}</p>
                 </button>
@@ -111,6 +123,8 @@ export const Home: React.FC<Props> = ({ preview }) => {
     );
   }
 
+  console.log(layout);
+
   return (
     <>
       <Layout preview={preview}>
@@ -123,23 +137,58 @@ export const Home: React.FC<Props> = ({ preview }) => {
               {card.attributes.title}
             </h2>
             <hr className='border-yellow-300 mb-4 mx-auto' />
-            <ul>
-              {card.attributes.workouts.map(
-                (workout, i) =>
-                  (workout.column_one || workout.column_two) && (
-                    <li key={i} className='mb-4'>
-                      <div className='flex items-center justify-between'>
-                        <div className='w-1/4 mr-16'>
-                          <p
-                            className={cn('font-semibold', {
-                              'text-[4.5rem] leading-[4.75rem]': card.attributes.workouts.length < 5,
-                              'text-[3.75rem] leading-[4rem]': card.attributes.workouts.length >= 5
-                            })}
-                          >
-                            {workout.column_one}
-                          </p>
+            {layout === 'list' ? (
+              <ul>
+                {card.attributes.workouts.map(
+                  (workout, i) =>
+                    (workout.column_one || workout.column_two) && (
+                      <li key={i} className='mb-4'>
+                        <div className='flex items-center justify-between'>
+                          <div className='w-1/4 mr-16'>
+                            <p
+                              className={cn('font-semibold', {
+                                'text-[4.5rem] leading-[4.75rem]': card.attributes.workouts.length < 5,
+                                'text-[3.75rem] leading-[4rem]': card.attributes.workouts.length >= 5
+                              })}
+                            >
+                              {workout.column_one}
+                            </p>
+                          </div>
+                          <ul className='w-3/4'>
+                            {workout.column_two.split(/\r?\n/).map((item, index) => (
+                              <li
+                                key={index}
+                                className={cn('mb-2 font-semibold', {
+                                  'text-[5rem] leading-[5.25rem]': card.attributes.workouts.length < 5,
+                                  'text-[4rem] leading-[5rem]': card.attributes.workouts.length >= 5
+                                })}
+                              >
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        <ul className='w-3/4'>
+                        <hr className='border-yellow-300 mt-5 mb-3 mx-5' />
+                      </li>
+                    )
+                )}
+              </ul>
+            ) : (
+              <ul className='flex flex-wrap justify-between'>
+                {card.attributes.workouts.map(
+                  (workout, i) =>
+                    (workout.column_one || workout.column_two) && (
+                      <li key={i} className='flex flex-col mb-4 mx-2 px-4 py-1 rounded-lg bg-neutral-800'>
+                        <p
+                          className={cn('font-semibold text-center mt-1 mb-2', {
+                            'text-[4.5rem] leading-[4.75rem]': card.attributes.workouts.length < 5,
+                            'text-[3.75rem] leading-[4rem]': card.attributes.workouts.length >= 5
+                          })}
+                        >
+                          {workout.column_one}
+                        </p>
+                        <hr className='border-yellow-300 mx-5' />
+                        <ul>
                           {workout.column_two.split(/\r?\n/).map((item, index) => (
                             <li
                               key={index}
@@ -152,12 +201,11 @@ export const Home: React.FC<Props> = ({ preview }) => {
                             </li>
                           ))}
                         </ul>
-                      </div>
-                      <hr className='border-yellow-300 mt-5 mb-3 mx-5' />
-                    </li>
-                  )
-              )}
-            </ul>
+                      </li>
+                    )
+                )}
+              </ul>
+            )}
           </div>
         </Card>
       </Layout>
