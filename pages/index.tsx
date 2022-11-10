@@ -7,7 +7,6 @@ import { setCardId } from '@redux/slices/appSlice';
 import Container from '@components/Container';
 import Layout from '@components/Layout';
 import Card from '@components/Card';
-import logo from '@image/logos/logo_lg.png';
 import huckle from '@image/beautiful-huckle.jpg';
 import highFive from '@image/high-five.jpg';
 import plates from '@image/plates.jpg';
@@ -73,21 +72,8 @@ export const Home: React.FC<Props> = ({ preview }) => {
     return (
       <Layout preview={preview}>
         <Head>
-          <title>Athlete Movement Classes</title>
+          <title>Athlete Movement | Classes</title>
         </Head>
-        <div className='fixed h-full w-full'>
-          <Image
-            src={logo}
-            alt='Logo'
-            className='opacity-10'
-            style={{
-              objectFit: 'contain',
-              objectPosition: 'center'
-            }}
-            fill
-            priority
-          />
-        </div>
         <Container className='flex justify-between items-start flex-wrap'>
           {data?.data && data.data.length ? (
             data.data.map((item, index) => {
