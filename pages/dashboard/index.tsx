@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { v4 as uuid } from 'uuid';
 import { useTimeout } from 'usehooks-ts';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { MdDelete, MdEdit, MdArrowUpward, MdArrowDownward } from 'react-icons/md';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp, setDoc } from 'firebase/firestore';
 import { auth, db } from '@lib/firebase';
@@ -274,7 +274,7 @@ export const DashboardPage: React.FC = () => {
                   (a, b) => classes[activeClassId].workouts[a].order - classes[activeClassId].workouts[b].order
                 )
                 .map(
-                  (workoutId, index) =>
+                  (workoutId, index, original) =>
                     !classes[activeClassId].workouts[workoutId].isDeleted && (
                       <div key={index} className='flex flex-col lg:flex-row gap-5'>
                         <Textarea
@@ -315,8 +315,65 @@ export const DashboardPage: React.FC = () => {
                             }))
                           }
                         />
-                        <div>
-                          <IconButton variant='gradient' color='red' onClick={() => deleteWorkout(workoutId)}>
+                        <div className='flex flex-col gap-2'>
+                          <IconButton
+                            size='sm'
+                            variant='gradient'
+                            onClick={() => {
+                              setClasses(prevClasses => ({
+                                ...prevClasses,
+                                [activeClassId]: {
+                                  ...prevClasses[activeClassId],
+                                  workouts: {
+                                    ...prevClasses[activeClassId].workouts,
+                                    [original[index - 1]]: {
+                                      ...prevClasses[activeClassId].workouts[original[index - 1]],
+                                      order: prevClasses[activeClassId].workouts[original[index - 1]].order + 1
+                                    },
+                                    [workoutId]: {
+                                      ...prevClasses[activeClassId].workouts[workoutId],
+                                      order: prevClasses[activeClassId].workouts[workoutId].order - 1
+                                    }
+                                  }
+                                }
+                              }));
+                            }}
+                            disabled={!index}
+                          >
+                            <MdArrowUpward size={20} />
+                          </IconButton>
+                          <IconButton
+                            size='sm'
+                            variant='gradient'
+                            onClick={() => {
+                              setClasses(prevClasses => ({
+                                ...prevClasses,
+                                [activeClassId]: {
+                                  ...prevClasses[activeClassId],
+                                  workouts: {
+                                    ...prevClasses[activeClassId].workouts,
+                                    [workoutId]: {
+                                      ...prevClasses[activeClassId].workouts[workoutId],
+                                      order: prevClasses[activeClassId].workouts[workoutId].order + 1
+                                    },
+                                    [original[index + 1]]: {
+                                      ...prevClasses[activeClassId].workouts[original[index + 1]],
+                                      order: prevClasses[activeClassId].workouts[original[index + 1]].order - 1
+                                    }
+                                  }
+                                }
+                              }));
+                            }}
+                            disabled={index === original.length - 1}
+                          >
+                            <MdArrowDownward size={20} />
+                          </IconButton>
+                          <IconButton
+                            size='sm'
+                            variant='gradient'
+                            color='red'
+                            onClick={() => deleteWorkout(workoutId)}
+                          >
                             <MdDelete size={20} />
                           </IconButton>
                         </div>
