@@ -15,7 +15,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, preview }) => {
       <Meta />
       <div className='flex flex-col h-screen text-white bg-neutral-800'>
         <Alert preview={preview} />
-        <div className='fixed h-full w-full'>
+        <div className='fixed h-full w-full bg-neutral-800'>
           <Image
             src={logo}
             alt='Logo'
