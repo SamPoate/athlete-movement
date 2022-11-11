@@ -237,11 +237,11 @@ export const DashboardPage: React.FC = () => {
         <title>Athlete Movement | Dashboard</title>
       </Head>
       {error && (
-        <div className='fixed w-full p-5'>
+        <div className='fixed w-full p-2 lg:p-5 z-50'>
           <Alert color='red'>{error}</Alert>
         </div>
       )}
-      <div className='flex flex-col p-5 gap-5'>
+      <div className='flex flex-col p-2 lg:p-5 gap-5'>
         {classes[activeClassId] ? (
           <Card>
             <CardHeader
