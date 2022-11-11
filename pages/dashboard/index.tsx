@@ -315,7 +315,7 @@ export const DashboardPage: React.FC = () => {
                             }))
                           }
                         />
-                        <div className='flex flex-col gap-2'>
+                        <div className='flex flex-row-reverse lg:flex-col gap-2 mt-[-15px] lg:mt-0'>
                           <IconButton
                             size='sm'
                             variant='gradient'
@@ -372,6 +372,7 @@ export const DashboardPage: React.FC = () => {
                             size='sm'
                             variant='gradient'
                             color='red'
+                            className='mr-auto lg:mr-0'
                             onClick={() => deleteWorkout(workoutId)}
                           >
                             <MdDelete size={20} />
