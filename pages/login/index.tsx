@@ -31,7 +31,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 
   useEffect(() => {
     if (auth.currentUser) {
-      router.push('/dashboard');
+      router.replace('/dashboard');
     }
   }, [router]);
 
@@ -39,7 +39,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
     if (email.includes('@') && password.length > 5) {
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        router.push('/dashboard');
+        router.replace('/dashboard');
       } catch (error) {
         console.log(error);
         setError('Invalid email or password');
