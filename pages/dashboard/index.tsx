@@ -5,16 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { useTimeout } from 'usehooks-ts';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  FieldValue,
-  getDocs,
-  serverTimestamp,
-  setDoc
-} from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp, setDoc } from 'firebase/firestore';
 import { auth, db } from '@lib/firebase';
 import Layout from '@components/Layout';
 import {
@@ -29,26 +20,10 @@ import {
   Typography
 } from '@material-tailwind/react';
 
-interface DashboardPageProps {}
+type ICombinedClassAndWorkout = IClass & { workouts: Record<string, IClassWorkout> };
 
-interface IClassWorkout {
-  name: string;
-  description: string;
-  isNew?: boolean;
-  isDeleted?: boolean;
-}
-
-interface IClass {
-  name: string;
-  published: boolean;
-  workouts: Record<string, IClassWorkout>;
-  created_at: FieldValue;
-  updated_at?: FieldValue;
-  isNew?: boolean;
-}
-
-export const DashboardPage: React.FC<DashboardPageProps> = () => {
-  const [classes, setClasses] = useState<Record<string, IClass>>({});
+export const DashboardPage: React.FC = () => {
+  const [classes, setClasses] = useState<Record<string, ICombinedClassAndWorkout>>({});
   const [activeClassId, setActiveClassId] = useState<string>('');
   const [error, setError] = useState<string>('');
 
@@ -94,6 +69,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = () => {
         [workoutId]: {
           name: '',
           description: '',
+          order: 1,
           isNew: true
         }
       },
@@ -110,7 +86,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = () => {
       ...prevClasses,
       [activeClassId]: {
         ...prevClasses[activeClassId],
-        workouts: { ...prevClasses[activeClassId].workouts, [uuid()]: { name: '', description: '', isNew: true } }
+        workouts: {
+          ...prevClasses[activeClassId].workouts,
+          [uuid()]: {
+            name: '',
+            description: '',
+            order: Object.keys(prevClasses[activeClassId].workouts).length + 1,
+            isNew: true
+          }
+        }
       }
     }));
   };
@@ -185,7 +169,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = () => {
   const saveClass = async () => {
     try {
       const classesRef = collection(db, 'classes');
-      let savedClass: Partial<IClass> = {};
+      let savedClass: Partial<ICombinedClassAndWorkout> = {};
 
       const originalClass = classes[activeClassId];
       const classData = {
@@ -206,36 +190,38 @@ export const DashboardPage: React.FC<DashboardPageProps> = () => {
 
       savedClass = originalClass;
 
-      Object.keys(originalClass.workouts).forEach(async workoutKey => {
-        const workout = originalClass.workouts[workoutKey];
-        const workoutData = { name: workout.name, description: workout.description };
-        let workoutId = workoutKey;
+      Object.keys(originalClass.workouts)
+        .sort((a, b) => originalClass.workouts[a].order - originalClass.workouts[b].order)
+        .forEach(async (workoutKey, index) => {
+          const workout = originalClass.workouts[workoutKey];
+          const workoutData = { name: workout.name, description: workout.description, order: index + 1 };
+          let workoutId = workoutKey;
 
-        if (workout.isDeleted) {
-          await deleteDoc(doc(db, 'classes', classId, 'workouts', workoutId));
-          return;
-        }
-
-        if (workout.isNew) {
-          const response = await addDoc(collection(db, 'classes', classId, 'workouts'), workoutData);
-          workoutId = response.id;
-        } else {
-          await setDoc(doc(collection(db, 'classes', classId, 'workouts'), workoutKey), workoutData);
-        }
-
-        savedClass = {
-          ...savedClass,
-          workouts: {
-            ...(savedClass.workouts || {}),
-            [workoutId]: workout
+          if (workout.isDeleted) {
+            await deleteDoc(doc(db, 'classes', classId, 'workouts', workoutId));
+            return;
           }
-        };
-      });
+
+          if (workout.isNew) {
+            const response = await addDoc(collection(db, 'classes', classId, 'workouts'), workoutData);
+            workoutId = response.id;
+          } else {
+            await setDoc(doc(collection(db, 'classes', classId, 'workouts'), workoutKey), workoutData);
+          }
+
+          savedClass = {
+            ...savedClass,
+            workouts: {
+              ...(savedClass.workouts || {}),
+              [workoutId]: workout
+            }
+          };
+        });
 
       let newClasses = { ...classes };
       delete newClasses[activeClassId];
 
-      newClasses = { ...newClasses, [classId]: savedClass as IClass };
+      newClasses = { ...newClasses, [classId]: savedClass as ICombinedClassAndWorkout };
 
       setClasses(newClasses);
       setActiveClassId('');
@@ -283,56 +269,60 @@ export const DashboardPage: React.FC<DashboardPageProps> = () => {
                 }
                 autoFocus={!classes[activeClassId].name.length}
               />
-              {Object.keys(classes[activeClassId].workouts).map(
-                (workoutId, index) =>
-                  !classes[activeClassId].workouts[workoutId].isDeleted && (
-                    <div key={index} className='flex flex-col lg:flex-row gap-5'>
-                      <Textarea
-                        label='Workout Name'
-                        value={classes[activeClassId].workouts[workoutId].name}
-                        onChange={({ target }) =>
-                          setClasses(prevClasses => ({
-                            ...prevClasses,
-                            [activeClassId]: {
-                              ...prevClasses[activeClassId],
-                              workouts: {
-                                ...prevClasses[activeClassId].workouts,
-                                [workoutId]: {
-                                  ...prevClasses[activeClassId].workouts[workoutId],
-                                  name: target.value
+              {Object.keys(classes[activeClassId].workouts)
+                .sort(
+                  (a, b) => classes[activeClassId].workouts[a].order - classes[activeClassId].workouts[b].order
+                )
+                .map(
+                  (workoutId, index) =>
+                    !classes[activeClassId].workouts[workoutId].isDeleted && (
+                      <div key={index} className='flex flex-col lg:flex-row gap-5'>
+                        <Textarea
+                          label='Workout Name'
+                          value={classes[activeClassId].workouts[workoutId].name}
+                          onChange={({ target }) =>
+                            setClasses(prevClasses => ({
+                              ...prevClasses,
+                              [activeClassId]: {
+                                ...prevClasses[activeClassId],
+                                workouts: {
+                                  ...prevClasses[activeClassId].workouts,
+                                  [workoutId]: {
+                                    ...prevClasses[activeClassId].workouts[workoutId],
+                                    name: target.value
+                                  }
                                 }
                               }
-                            }
-                          }))
-                        }
-                      />
-                      <Textarea
-                        label='Workout Description'
-                        value={classes[activeClassId].workouts[workoutId].description}
-                        onChange={({ target }) =>
-                          setClasses(prevClasses => ({
-                            ...prevClasses,
-                            [activeClassId]: {
-                              ...prevClasses[activeClassId],
-                              workouts: {
-                                ...prevClasses[activeClassId].workouts,
-                                [workoutId]: {
-                                  ...prevClasses[activeClassId].workouts[workoutId],
-                                  description: target.value
+                            }))
+                          }
+                        />
+                        <Textarea
+                          label='Workout Description'
+                          value={classes[activeClassId].workouts[workoutId].description}
+                          onChange={({ target }) =>
+                            setClasses(prevClasses => ({
+                              ...prevClasses,
+                              [activeClassId]: {
+                                ...prevClasses[activeClassId],
+                                workouts: {
+                                  ...prevClasses[activeClassId].workouts,
+                                  [workoutId]: {
+                                    ...prevClasses[activeClassId].workouts[workoutId],
+                                    description: target.value
+                                  }
                                 }
                               }
-                            }
-                          }))
-                        }
-                      />
-                      <div>
-                        <IconButton variant='gradient' color='red' onClick={() => deleteWorkout(workoutId)}>
-                          <MdDelete size={20} />
-                        </IconButton>
+                            }))
+                          }
+                        />
+                        <div>
+                          <IconButton variant='gradient' color='red' onClick={() => deleteWorkout(workoutId)}>
+                            <MdDelete size={20} />
+                          </IconButton>
+                        </div>
                       </div>
-                    </div>
-                  )
-              )}
+                    )
+                )}
               <div className='flex justify-between gap-3 lg:gap-5'>
                 <Button variant='gradient' onClick={addWorkout}>
                   Add Row
