@@ -241,7 +241,7 @@ export const DashboardPage: React.FC = () => {
           <Alert color='red'>{error}</Alert>
         </div>
       )}
-      <div className='flex flex-col px-5 py-10 gap-5'>
+      <div className='flex flex-col p-5 gap-5'>
         {classes[activeClassId] ? (
           <Card>
             <CardHeader
