@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type ClassLayout = 'grid' | 'list';
 interface AppState {
-  cardId: number | null;
+  cardId: number | string | null;
   layout: ClassLayout;
 }
 
@@ -15,7 +15,7 @@ export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setCardId: (state, { payload }: PayloadAction<number | null>) => {
+    setCardId: (state, { payload }: PayloadAction<number | string | null>) => {
       state.cardId = payload;
     },
     setLayout: (state, { payload }: PayloadAction<ClassLayout>) => {

@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import cn from 'classnames';
 import { useTypedDispatch, useTypedSelector } from '@redux/store';
-import { useGetClassesQuery } from '@redux/slices/classesApi';
 import { setCardId } from '@redux/slices/appSlice';
 import Container from '@components/Container';
 import Layout from '@components/Layout';
@@ -12,23 +12,71 @@ import highFive from '@image/high-five.jpg';
 import plates from '@image/plates.jpg';
 import kettlebells from '@image/kettlebells.jpg';
 import totallyNotADickShot from '@image/totally-not-a-dick-shot.jpg';
+import { db } from '@lib/firebase';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 interface Props {
   preview: any;
 }
 
 export const Home: React.FC<Props> = ({ preview }) => {
+  const [classes, setClasses] = useState<(IClass & { id: string })[]>([]);
+  const [workouts, setWorkouts] = useState<(IClassWorkout & { id: string })[]>([]);
+
   const cardId = useTypedSelector(state => state.app.cardId);
   const layout = useTypedSelector(state => state.app.layout);
 
-  const { data } = useGetClassesQuery(undefined, {
-    refetchOnFocus: true,
-    refetchOnReconnect: true
-  });
-
   const dispatch = useTypedDispatch();
 
-  const card = data?.data.find(item => item.id === cardId);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'classes'), collection => {
+      let allClasses: (IClass & { id: string })[] = [];
+
+      collection.forEach(doc => {
+        allClasses = [
+          ...allClasses,
+          {
+            ...doc.data(),
+            id: doc.id
+          } as IClass & { id: string }
+        ];
+      });
+
+      setClasses(allClasses);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    let unsubscribe = () => {};
+
+    if (cardId) {
+      unsubscribe = onSnapshot(collection(db, 'classes', cardId as string, 'workouts'), collection => {
+        let allWorkouts: (IClassWorkout & { id: string })[] = [];
+
+        collection.forEach(doc => {
+          allWorkouts = [
+            ...allWorkouts,
+            {
+              ...doc.data(),
+              id: doc.id
+            } as IClassWorkout & { id: string }
+          ];
+        });
+
+        setWorkouts(allWorkouts.sort((a, b) => a.order - b.order));
+      });
+    } else {
+      unsubscribe();
+    }
+
+    return () => {
+      unsubscribe();
+    };
+  }, [cardId]);
 
   const getClassStyles = (title?: string) => {
     let color = 'text-white';
@@ -66,18 +114,20 @@ export const Home: React.FC<Props> = ({ preview }) => {
     };
   };
 
-  const { color: cardColor, image: cardImage } = getClassStyles(card?.attributes.title);
+  const { color: cardColor, image: cardImage } = getClassStyles(classes.find(c => c.id === cardId)?.name);
 
-  if (!card) {
+  if (!cardId) {
     return (
       <Layout preview={preview}>
         <Head>
           <title>Athlete Movement | Classes</title>
         </Head>
         <Container className='flex justify-between items-start flex-wrap'>
-          {data?.data && data.data.length ? (
-            data.data.map((item, index) => {
-              const { color, image } = getClassStyles(item.attributes.title);
+          {classes.length ? (
+            classes.map((item, index) => {
+              const { color, image } = getClassStyles(item.name);
+
+              if (!item.published) return null;
 
               return (
                 <button
@@ -97,7 +147,7 @@ export const Home: React.FC<Props> = ({ preview }) => {
                     fill
                   />
                   <div className='absolute bg-neutral-900 opacity-80 inset-0 z-0' />
-                  <p className={cn('text-6xl font-semibold leading-none z-10', color)}>{item.attributes.title}</p>
+                  <p className={cn('text-6xl font-semibold leading-none z-10', color)}>{item.name}</p>
                 </button>
               );
             })
@@ -109,8 +159,6 @@ export const Home: React.FC<Props> = ({ preview }) => {
     );
   }
 
-  console.log(layout);
-
   return (
     <>
       <Layout preview={preview}>
@@ -120,33 +168,33 @@ export const Home: React.FC<Props> = ({ preview }) => {
         <Card image={cardImage}>
           <div className='p-4'>
             <h2 className={cn('font-semibold lg:text-7xl leading-none text-5xl text-center mb-5', cardColor)}>
-              {card.attributes.title}
+              {classes.find(c => c.id === cardId)?.name}
             </h2>
             <hr className='border-yellow-300 mb-4 mx-auto' />
             {layout === 'list' ? (
               <ul>
-                {card.attributes.workouts.map(
+                {workouts.map(
                   (workout, i) =>
-                    (workout.column_one || workout.column_two) && (
+                    (workout.name || workout.description) && (
                       <li key={i} className='mb-4'>
                         <div className='flex items-center justify-between'>
                           <div className='w-1/4 mr-16'>
                             <p
                               className={cn('font-semibold', {
-                                'text-[4.5rem] leading-[4.75rem]': card.attributes.workouts.length < 5,
-                                'text-[3.75rem] leading-[4rem]': card.attributes.workouts.length >= 5
+                                'text-[4.5rem] leading-[4.75rem]': workouts.length < 5,
+                                'text-[3.75rem] leading-[4rem]': workouts.length >= 5
                               })}
                             >
-                              {workout.column_one}
+                              {workout.name}
                             </p>
                           </div>
                           <ul className='w-3/4'>
-                            {workout.column_two.split(/\r?\n/).map((item, index) => (
+                            {workout.description.split(/\r?\n/).map((item, index) => (
                               <li
                                 key={index}
                                 className={cn('mb-2 font-semibold', {
-                                  'text-[5rem] leading-[5.25rem]': card.attributes.workouts.length < 5,
-                                  'text-[4rem] leading-[5rem]': card.attributes.workouts.length >= 5
+                                  'text-[5rem] leading-[5.25rem]': workouts.length < 5,
+                                  'text-[4rem] leading-[5rem]': workouts.length >= 5
                                 })}
                               >
                                 {item}
@@ -161,26 +209,26 @@ export const Home: React.FC<Props> = ({ preview }) => {
               </ul>
             ) : (
               <ul className='flex flex-wrap justify-between'>
-                {card.attributes.workouts.map(
+                {workouts.map(
                   (workout, i) =>
-                    (workout.column_one || workout.column_two) && (
+                    (workout.name || workout.description) && (
                       <li key={i} className='flex flex-col mb-4 mx-2 px-4 py-1 rounded-lg bg-neutral-800'>
                         <p
                           className={cn('font-semibold text-center mt-1 mb-2', {
-                            'text-[4.5rem] leading-[4.75rem]': card.attributes.workouts.length < 5,
-                            'text-[3.75rem] leading-[4rem]': card.attributes.workouts.length >= 5
+                            'text-[4.5rem] leading-[4.75rem]': workouts.length < 5,
+                            'text-[3.75rem] leading-[4rem]': workouts.length >= 5
                           })}
                         >
-                          {workout.column_one}
+                          {workout.name}
                         </p>
                         <hr className='border-yellow-300 mx-5' />
                         <ul>
-                          {workout.column_two.split(/\r?\n/).map((item, index) => (
+                          {workout.description.split(/\r?\n/).map((item, index) => (
                             <li
                               key={index}
                               className={cn('mb-2 font-semibold', {
-                                'text-[5rem] leading-[5.25rem]': card.attributes.workouts.length < 5,
-                                'text-[4rem] leading-[5rem]': card.attributes.workouts.length >= 5
+                                'text-[5rem] leading-[5.25rem]': workouts.length < 5,
+                                'text-[4rem] leading-[5rem]': workouts.length >= 5
                               })}
                             >
                               {item}
