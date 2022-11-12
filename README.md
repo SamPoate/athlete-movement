@@ -15,7 +15,7 @@
     <a href="https://github.com/sampoate/athlete-movement"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/sampoate/athlete-movement">View Demo</a>
+    <a href="https://athlete-movement.vercel.app/">View Demo</a>
     ·
     <a href="https://github.com/sampoate/athlete-movement/issues">Report Bug</a>
     ·
