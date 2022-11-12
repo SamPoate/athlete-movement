@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import cn from 'classnames';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { db } from '@lib/firebase';
 import { useTypedDispatch, useTypedSelector } from '@redux/store';
 import { setCardId } from '@redux/slices/appSlice';
 import Container from '@components/Container';
@@ -12,8 +14,6 @@ import highFive from '@image/high-five.jpg';
 import plates from '@image/plates.jpg';
 import kettlebells from '@image/kettlebells.jpg';
 import totallyNotADickShot from '@image/totally-not-a-dick-shot.jpg';
-import { db } from '@lib/firebase';
-import { collection, onSnapshot } from 'firebase/firestore';
 
 interface Props {
   preview: any;

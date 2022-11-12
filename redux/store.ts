@@ -2,12 +2,10 @@ import { combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { createWrapper } from 'next-redux-wrapper';
-import { api } from './slices';
 import appSlice from './slices/appSlice';
 
 const reducers = {
-  [appSlice.name]: appSlice.reducer,
-  [api.reducerPath]: api.reducer
+  [appSlice.name]: appSlice.reducer
 };
 
 const combinedReducer = combineReducers<typeof reducers>(reducers);
@@ -21,8 +19,7 @@ export const rootReducer: Reducer<RootState> = (state, action) => {
 };
 
 export const store = configureStore({
-  reducer: rootReducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(api.middleware)
+  reducer: rootReducer
 });
 
 setupListeners(store.dispatch);
