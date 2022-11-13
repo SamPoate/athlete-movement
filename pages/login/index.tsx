@@ -77,6 +77,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
               size='lg'
               value={password}
               onChange={({ target }) => setPassword(target.value)}
+              onKeyUp={({ key }) => key === 'Enter' && signIn()}
               type='password'
               error={!!error}
             />
