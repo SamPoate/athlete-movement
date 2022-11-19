@@ -179,24 +179,11 @@ export const Home: React.FC<Props> = ({ preview }) => {
                       <li key={i} className='mb-4'>
                         <div className='flex items-center justify-between'>
                           <div className='w-1/4 mr-16'>
-                            <p
-                              className={cn('font-semibold', {
-                                'text-[4.5rem] leading-[4.75rem]': workouts.length < 5,
-                                'text-[3.75rem] leading-[4rem]': workouts.length >= 5
-                              })}
-                            >
-                              {workout.name}
-                            </p>
+                            <p className='font-semibold text-[3.75rem] leading-[4rem]'>{workout.name}</p>
                           </div>
                           <ul className='w-3/4'>
                             {workout.description.split(/\r?\n/).map((item, index) => (
-                              <li
-                                key={index}
-                                className={cn('mb-2 font-semibold', {
-                                  'text-[5rem] leading-[5.25rem]': workouts.length < 5,
-                                  'text-[4rem] leading-[5rem]': workouts.length >= 5
-                                })}
-                              >
+                              <li key={index} className='mb-2 font-semibold text-[4rem] leading-[5rem]'>
                                 {item}
                               </li>
                             ))}
