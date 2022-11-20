@@ -256,6 +256,7 @@ export const DashboardPage: React.FC = () => {
             </CardHeader>
             <CardBody className='flex flex-col gap-5'>
               <Input
+                className='text-[1rem]'
                 label='Class Name'
                 value={classes[activeClassId].name}
                 onChange={({ target }) =>
@@ -278,6 +279,7 @@ export const DashboardPage: React.FC = () => {
                     !classes[activeClassId].workouts[workoutId].isDeleted && (
                       <div key={index} className='flex flex-col lg:flex-row gap-5'>
                         <Textarea
+                          className='text-[1rem]'
                           label='Workout Name'
                           value={classes[activeClassId].workouts[workoutId].name}
                           onChange={({ target }) =>
@@ -297,6 +299,7 @@ export const DashboardPage: React.FC = () => {
                           }
                         />
                         <Textarea
+                          className='text-[1rem]'
                           label='Workout Description'
                           value={classes[activeClassId].workouts[workoutId].description}
                           onChange={({ target }) =>

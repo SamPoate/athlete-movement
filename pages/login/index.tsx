@@ -31,7 +31,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 
   useEffect(() => {
     if (auth.currentUser) {
-      router.replace('/dashboard');
+      //   router.replace('/dashboard');
     }
   }, [router]);
 
@@ -68,6 +68,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
             <Input
               label='Email'
               size='lg'
+              className='text-[1rem]'
               value={email}
               onChange={({ target }) => setEmail(target.value)}
               error={!!error}
@@ -75,6 +76,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
             <Input
               label='Password'
               size='lg'
+              className='text-[1rem]'
               value={password}
               onChange={({ target }) => setPassword(target.value)}
               onKeyUp={({ key }) => key === 'Enter' && signIn()}
