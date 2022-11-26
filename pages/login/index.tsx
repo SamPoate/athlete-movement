@@ -31,7 +31,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 
   useEffect(() => {
     if (auth.currentUser) {
-      //   router.replace('/dashboard');
+      router.replace('/dashboard');
     }
   }, [router]);
 
