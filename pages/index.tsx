@@ -14,6 +14,11 @@ import highFive from '@image/high-five.jpg';
 import plates from '@image/plates.jpg';
 import kettlebells from '@image/kettlebells.jpg';
 import totallyNotADickShot from '@image/totally-not-a-dick-shot.jpg';
+import snowCap1 from '@image/snow-cap-1.png';
+import snowCap2 from '@image/snow-cap-2.png';
+import snowCap3 from '@image/snow-cap-3.png';
+import christmasHat from '@image/christmas-hat.png';
+import Snowfall from 'react-snowfall';
 
 interface Props {
   preview: any;
@@ -167,15 +172,34 @@ export const Home: React.FC<Props> = ({ preview }) => {
         </Head>
         <Card image={cardImage}>
           <div className='p-4'>
-            <h2 className={cn('font-semibold lg:text-7xl leading-none text-5xl text-center mb-5', cardColor)}>
-              {classes.find(c => c.id === cardId)?.name}
-            </h2>
+            <div className='flex justify-center'>
+              <div className='relative'>
+                <h2 className={cn('font-semibold lg:text-7xl leading-none text-5xl text-center mb-5', cardColor)}>
+                  {classes.find(c => c.id === cardId)?.name}
+                </h2>
+                <Image src={christmasHat} alt='Snow cap' width={40} className='absolute top-[-5px] left-[-16px]' />
+              </div>
+            </div>
             <hr className='border-yellow-300 mb-4 mx-auto' />
             {layout === 'list' ? (
               <ul>
-                {workouts.map(
-                  (workout, i) =>
-                    (workout.name || workout.description) && (
+                {workouts.map((workout, i) => {
+                  if (workout.name || workout.description) {
+                    let snowImage = snowCap1;
+                    let width = 250;
+                    let position = 'left-0 top-[-12px]';
+
+                    if (i % 3 === 0) {
+                      snowImage = snowCap2;
+                      width = 100;
+                      position = 'right-[15px] top-[-12px]';
+                    } else if (i % 3 === 1) {
+                      snowImage = snowCap3;
+                      width = 110;
+                      position = 'left-[300px] top-[-8px]';
+                    }
+
+                    return (
                       <li key={i} className='mb-4'>
                         <div className='flex items-center justify-between'>
                           <div className='w-1/4 mr-16'>
@@ -189,10 +213,19 @@ export const Home: React.FC<Props> = ({ preview }) => {
                             ))}
                           </ul>
                         </div>
-                        <hr className='border-yellow-300 mt-5 mb-3 mx-5' />
+                        <div className='relative'>
+                          <Image
+                            src={snowImage}
+                            alt='Snow cap'
+                            width={width}
+                            className={cn('absolute', position)}
+                          />
+                          <hr className='border-yellow-300 mt-5 mb-3 mx-5' />
+                        </div>
                       </li>
-                    )
-                )}
+                    );
+                  }
+                })}
               </ul>
             ) : (
               <ul className='flex flex-wrap justify-between'>
@@ -229,6 +262,7 @@ export const Home: React.FC<Props> = ({ preview }) => {
             )}
           </div>
         </Card>
+        <Snowfall snowflakeCount={50} />
       </Layout>
     </>
   );
