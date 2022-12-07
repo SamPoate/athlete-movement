@@ -262,7 +262,7 @@ export const Home: React.FC<Props> = ({ preview }) => {
             )}
           </div>
         </Card>
-        <Snowfall snowflakeCount={50} />
+        <Snowfall snowflakeCount={25} />
       </Layout>
     </>
   );
