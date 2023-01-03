@@ -14,7 +14,6 @@ import highFive from '@image/high-five.jpg';
 import plates from '@image/plates.jpg';
 import kettlebells from '@image/kettlebells.jpg';
 import totallyNotADickShot from '@image/totally-not-a-dick-shot.jpg';
-import Fireworks, { FireworksHandlers } from '@fireworks-js/react';
 
 interface Props {
   preview: any;
@@ -26,8 +25,6 @@ export const Home: React.FC<Props> = ({ preview }) => {
 
   const cardId = useTypedSelector(state => state.app.cardId);
   const layout = useTypedSelector(state => state.app.layout);
-
-  const ref = useRef<FireworksHandlers>(null);
 
   const dispatch = useTypedDispatch();
 
@@ -249,18 +246,6 @@ export const Home: React.FC<Props> = ({ preview }) => {
           </div>
         </Card>
       </Layout>
-      <Fireworks
-        ref={ref}
-        options={{ opacity: 0.5, rocketsPoint: { min: 10, max: 80 } }}
-        style={{
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          position: 'fixed',
-          background: 'transparent'
-        }}
-      />
     </>
   );
 };
