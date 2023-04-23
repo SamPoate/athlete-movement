@@ -30,7 +30,7 @@ export const Footer: React.FC<FooterProps> = () => {
   return (
     <footer ref={footerRef} className='bg-neutral-700 z-10'>
       <Container className='flex justify-between text-xs'>
-        <button
+        {/* <button
           ref={setReferenceElement}
           className='flex-1 text-left'
           onClick={() => {
@@ -79,20 +79,21 @@ export const Footer: React.FC<FooterProps> = () => {
           >
             Zoom
           </button> */}
-        </div>
-        <button className='flex-1 text-center' onClick={() => dispatch(setCardId(null))}>
+        {/* </div> */}
+        <button className='flex-1 text-left' onClick={() => dispatch(setCardId(null))}>
           Home
         </button>
         <p className='text-right flex-1'>
-          Made with love by{' '}
+          Sponsored By{' '}
           <a
-            href='https://sampoate.com'
+            href='https://crewletics.com'
             className='text-fuchsia-300 hover:underline'
             target='_blank'
             rel='noreferrer'
           >
-            Sam Poate
+            Crewletics.com
           </a>
+          . Join the beta gym app now!
         </p>
       </Container>
     </footer>
