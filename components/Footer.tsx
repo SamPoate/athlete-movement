@@ -93,7 +93,7 @@ export const Footer: React.FC<FooterProps> = () => {
           >
             Crewletics.com
           </a>
-          . Join the beta gym app now!
+          . Download the app now!
         </p>
       </Container>
     </footer>
