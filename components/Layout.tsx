@@ -28,7 +28,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, preview }) => {
             priority
           />
         </div>
-        <main className='flex flex-col flex-grow'>{children}</main>
+        <main className='flex flex-col flex-grow z-10'>{children}</main>
         <Footer />
       </div>
     </>

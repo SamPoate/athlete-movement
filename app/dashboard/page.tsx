@@ -1,37 +1,28 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { v4 as uuid } from 'uuid';
-import { useTimeout } from 'usehooks-ts';
-import { MdDelete, MdEdit, MdArrowUpward, MdArrowDownward } from 'react-icons/md';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { ArrowUp, ArrowDown, Trash2, Edit, Eye, EyeOff, Plus } from 'lucide-react';
 import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp, setDoc } from 'firebase/firestore';
 import { auth, db } from '@lib/firebase';
 import Layout from '@components/Layout';
-import {
-  Alert,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  IconButton,
-  Input,
-  Textarea,
-  Typography
-} from '@material-tailwind/react';
+import { Button } from '@components/ui/button';
+import { Card, CardHeader, CardContent, CardTitle } from '@components/ui/card';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
+import { Textarea } from '@components/ui/textarea';
+import { Badge } from '@components/ui/badge';
+import { Separator } from '@components/ui/separator';
+import { toast } from 'sonner';
 
 type ICombinedClassAndWorkout = IClass & { workouts: Record<string, IClassWorkout> };
 
-export const DashboardPage: React.FC = () => {
+export default function DashboardPage() {
   const [classes, setClasses] = useState<Record<string, ICombinedClassAndWorkout>>({});
   const [activeClassId, setActiveClassId] = useState<string>('');
-  const [error, setError] = useState<string>('');
 
   const router = useRouter();
-
-  useTimeout(() => {
-    setError('');
-  }, 5000);
 
   useEffect(() => {
     if (!auth.currentUser) {
@@ -144,7 +135,7 @@ export const DashboardPage: React.FC = () => {
       }));
     } catch (error) {
       console.log(error);
-      setError('Something went wrong');
+      toast.error('Something went wrong');
     }
   };
 
@@ -162,7 +153,7 @@ export const DashboardPage: React.FC = () => {
       });
     } catch (error) {
       console.log(error);
-      setError('Error removing class');
+      toast.error('Error removing class');
     }
   };
 
@@ -227,49 +218,37 @@ export const DashboardPage: React.FC = () => {
       setActiveClassId('');
     } catch (error) {
       console.log(error);
-      setError('Error saving class');
+      toast.error('Error saving class');
     }
   };
 
   return (
     <Layout>
-      <Head>
-        <title>Athlete Movement | Dashboard</title>
-      </Head>
-      {error && (
-        <div className='fixed w-full p-2 lg:p-5 z-50'>
-          <Alert color='red'>{error}</Alert>
-        </div>
-      )}
       <div className='flex flex-col p-2 lg:p-5 gap-5'>
         {classes[activeClassId] ? (
-          <Card>
-            <CardHeader
-              className='mb-4 grid h-10 place-items-center'
-              variant='gradient'
-              color='blue'
-              floated={false}
-            >
-              <Typography color='white' variant='h5'>
-                Class Editor
-              </Typography>
+          <Card className='shadow-xl border-t-4 border-t-neutral-800 overflow-hidden'>
+            <CardHeader className='bg-gradient-to-br from-neutral-800 via-neutral-900 to-black text-white py-6 relative overflow-hidden'>
+              <CardTitle className='text-center text-3xl font-bold tracking-tight relative z-10'>Class Editor</CardTitle>
             </CardHeader>
-            <CardBody className='flex flex-col gap-5'>
-              <Input
-                className='text-[1rem]'
-                label='Class Name'
-                value={classes[activeClassId].name}
-                onChange={({ target }) =>
-                  setClasses({
-                    ...classes,
-                    [activeClassId]: {
-                      ...classes[activeClassId],
-                      name: target.value
-                    }
-                  })
-                }
-                autoFocus={!classes[activeClassId].name.length}
-              />
+            <CardContent className='flex flex-col gap-6 pt-6'>
+              <div className='space-y-2'>
+                <Label htmlFor='class-name'>Class Name</Label>
+                <Input
+                  id='class-name'
+                  className='text-[1rem]'
+                  value={classes[activeClassId].name}
+                  onChange={({ target }) =>
+                    setClasses({
+                      ...classes,
+                      [activeClassId]: {
+                        ...classes[activeClassId],
+                        name: target.value
+                      }
+                    })
+                  }
+                  autoFocus={!classes[activeClassId].name.length}
+                />
+              </div>
               {Object.keys(classes[activeClassId].workouts)
                 .sort(
                   (a, b) => classes[activeClassId].workouts[a].order - classes[activeClassId].workouts[b].order
@@ -278,50 +257,56 @@ export const DashboardPage: React.FC = () => {
                   (workoutId, index, original) =>
                     !classes[activeClassId].workouts[workoutId].isDeleted && (
                       <div key={index} className='flex flex-col lg:flex-row gap-5'>
-                        <Textarea
-                          className='text-[1rem]'
-                          label='Workout Name'
-                          value={classes[activeClassId].workouts[workoutId].name}
-                          onChange={({ target }) =>
-                            setClasses(prevClasses => ({
-                              ...prevClasses,
-                              [activeClassId]: {
-                                ...prevClasses[activeClassId],
-                                workouts: {
-                                  ...prevClasses[activeClassId].workouts,
-                                  [workoutId]: {
-                                    ...prevClasses[activeClassId].workouts[workoutId],
-                                    name: target.value
+                        <div className='flex-1 space-y-2'>
+                          <Label htmlFor={`workout-name-${index}`}>Workout Name</Label>
+                          <Textarea
+                            id={`workout-name-${index}`}
+                            className='text-[1rem]'
+                            value={classes[activeClassId].workouts[workoutId].name}
+                            onChange={({ target }) =>
+                              setClasses(prevClasses => ({
+                                ...prevClasses,
+                                [activeClassId]: {
+                                  ...prevClasses[activeClassId],
+                                  workouts: {
+                                    ...prevClasses[activeClassId].workouts,
+                                    [workoutId]: {
+                                      ...prevClasses[activeClassId].workouts[workoutId],
+                                      name: target.value
+                                    }
                                   }
                                 }
-                              }
-                            }))
-                          }
-                        />
-                        <Textarea
-                          className='text-[1rem]'
-                          label='Workout Description'
-                          value={classes[activeClassId].workouts[workoutId].description}
-                          onChange={({ target }) =>
-                            setClasses(prevClasses => ({
-                              ...prevClasses,
-                              [activeClassId]: {
-                                ...prevClasses[activeClassId],
-                                workouts: {
-                                  ...prevClasses[activeClassId].workouts,
-                                  [workoutId]: {
-                                    ...prevClasses[activeClassId].workouts[workoutId],
-                                    description: target.value
+                              }))
+                            }
+                          />
+                        </div>
+                        <div className='flex-1 space-y-2'>
+                          <Label htmlFor={`workout-description-${index}`}>Workout Description</Label>
+                          <Textarea
+                            id={`workout-description-${index}`}
+                            className='text-[1rem]'
+                            value={classes[activeClassId].workouts[workoutId].description}
+                            onChange={({ target }) =>
+                              setClasses(prevClasses => ({
+                                ...prevClasses,
+                                [activeClassId]: {
+                                  ...prevClasses[activeClassId],
+                                  workouts: {
+                                    ...prevClasses[activeClassId].workouts,
+                                    [workoutId]: {
+                                      ...prevClasses[activeClassId].workouts[workoutId],
+                                      description: target.value
+                                    }
                                   }
                                 }
-                              }
-                            }))
-                          }
-                        />
+                              }))
+                            }
+                          />
+                        </div>
                         <div className='flex flex-row-reverse lg:flex-col gap-2 mt-[-15px] lg:mt-0'>
-                          <IconButton
-                            size='sm'
-                            variant='gradient'
+                          <Button
+                            variant='ghost'
+                            size='icon'
                             onClick={() => {
                               setClasses(prevClasses => ({
                                 ...prevClasses,
@@ -343,11 +328,11 @@ export const DashboardPage: React.FC = () => {
                             }}
                             disabled={!index}
                           >
-                            <MdArrowUpward size={20} />
-                          </IconButton>
-                          <IconButton
-                            size='sm'
-                            variant='gradient'
+                            <ArrowUp className='h-5 w-5' />
+                          </Button>
+                          <Button
+                            variant='ghost'
+                            size='icon'
                             onClick={() => {
                               setClasses(prevClasses => ({
                                 ...prevClasses,
@@ -369,86 +354,104 @@ export const DashboardPage: React.FC = () => {
                             }}
                             disabled={index === original.length - 1}
                           >
-                            <MdArrowDownward size={20} />
-                          </IconButton>
-                          <IconButton
-                            size='sm'
-                            variant='gradient'
-                            color='red'
-                            className='mr-auto lg:mr-0'
+                            <ArrowDown className='h-5 w-5' />
+                          </Button>
+                          <Button
+                            variant='ghost'
+                            size='icon'
+                            className='mr-auto lg:mr-0 text-red-600 hover:text-red-700 hover:bg-red-50'
                             onClick={() => deleteWorkout(workoutId)}
                           >
-                            <MdDelete size={20} />
-                          </IconButton>
+                            <Trash2 className='h-5 w-5' />
+                          </Button>
                         </div>
                       </div>
                     )
                 )}
+              <Separator className='my-2' />
               <div className='flex justify-between gap-3 lg:gap-5'>
-                <Button variant='gradient' onClick={addWorkout}>
+                <Button onClick={addWorkout} variant='outline'>
+                  <Plus className='h-4 w-4 mr-2' />
                   Add Row
                 </Button>
                 <div className='flex gap-3'>
-                  <Button variant='gradient' color='red' onClick={cancelEdit}>
+                  <Button variant='destructive' onClick={cancelEdit}>
                     Cancel
                   </Button>
-                  <Button variant='gradient' color='green' onClick={saveClass}>
+                  <Button variant='default' className='bg-green-600 hover:bg-green-700' onClick={saveClass}>
                     Save Class
                   </Button>
                 </div>
               </div>
-            </CardBody>
+            </CardContent>
           </Card>
         ) : (
-          <Card>
-            <CardHeader
-              className='mb-4 grid h-10 place-items-center'
-              variant='gradient'
-              color='blue'
-              floated={false}
-            >
-              <Typography color='white' variant='h5'>
-                Your Classes
-              </Typography>
+          <Card className='shadow-xl border-t-4 border-t-neutral-800 overflow-hidden'>
+            <CardHeader className='bg-gradient-to-br from-neutral-800 via-neutral-900 to-black text-white py-6 relative overflow-hidden'>
+              <CardTitle className='text-center text-3xl font-bold tracking-tight relative z-10'>Classes</CardTitle>
             </CardHeader>
-            <CardBody className='flex flex-col gap-5'>
+            <CardContent className='flex flex-col gap-6 pt-6'>
               {Object.keys(classes)
                 .sort((a, b) => classes[a].name.localeCompare(classes[b].name))
                 .map(classId => (
-                  <div key={classId}>
-                    <div key={classId} className='flex items-center justify-between gap-5'>
-                      <Typography variant='h3'>{classes[classId].name}</Typography>
-                      <div className='flex items-center gap-2'>
-                        <IconButton variant='gradient' color='green' onClick={() => togglePublish(classId)}>
-                          {classes[classId].published ? <AiFillEye size={20} /> : <AiFillEyeInvisible size={20} />}
-                        </IconButton>
-                        <IconButton variant='gradient' onClick={() => setActiveClassId(classId)}>
-                          <MdEdit size={20} />
-                        </IconButton>
-                        <IconButton variant='gradient' color='red' onClick={() => deleteClass(classId)}>
-                          <MdDelete size={20} />
-                        </IconButton>
+                  <div key={classId} className='border rounded-lg p-4 hover:bg-neutral-50 transition-colors'>
+                    <div className='flex items-center justify-between gap-5 mb-3'>
+                      <div className='flex items-center gap-3'>
+                        <h3 className='text-2xl font-bold'>{classes[classId].name}</h3>
+                        {classes[classId].published && (
+                          <Badge variant='default' className='bg-green-600'>Published</Badge>
+                        )}
+                      </div>
+                      <div className='flex items-center gap-1'>
+                        <Button
+                          variant='ghost'
+                          size='icon'
+                          className='text-violet-600 hover:text-violet-700 hover:bg-violet-50'
+                          onClick={() => togglePublish(classId)}
+                          title={classes[classId].published ? 'Unpublish' : 'Publish'}
+                        >
+                          {classes[classId].published ? <Eye className='h-5 w-5' /> : <EyeOff className='h-5 w-5' />}
+                        </Button>
+                        <Button 
+                          variant='ghost' 
+                          size='icon'
+                          className='hover:bg-neutral-100'
+                          onClick={() => setActiveClassId(classId)}
+                          title='Edit'
+                        >
+                          <Edit className='h-5 w-5' />
+                        </Button>
+                        <Button 
+                          variant='ghost' 
+                          size='icon' 
+                          className='text-red-600 hover:text-red-700 hover:bg-red-50'
+                          onClick={() => deleteClass(classId)}
+                          title='Delete'
+                        >
+                          <Trash2 className='h-5 w-5' />
+                        </Button>
                       </div>
                     </div>
+                    <Separator className='my-3' />
                     <div className='flex items-start gap-5'>
                       <div className='flex-1 max-w-xs'>
-                        <Typography variant='h5'>Name</Typography>
+                        <h5 className='text-sm font-semibold text-neutral-600 mb-2 uppercase tracking-wide'>Name</h5>
                         {Object.keys(classes[classId].workouts).map(
                           workoutId =>
                             !classes[classId].workouts[workoutId].isDeleted && (
                               <div key={workoutId}>
-                                <Typography>{classes[classId].workouts[workoutId].name}</Typography>
+                                <p className='text-sm'>{classes[classId].workouts[workoutId].name}</p>
                               </div>
                             )
                         )}
                       </div>
-                      <div>
-                        <Typography variant='h5'>Description</Typography>
+                      <div className='flex-1'>
+                        <h5 className='text-sm font-semibold text-neutral-600 mb-2 uppercase tracking-wide'>Description</h5>
                         {Object.keys(classes[classId].workouts).map(
                           workoutId =>
                             !classes[classId].workouts[workoutId].isDeleted && (
                               <div key={workoutId}>
-                                <Typography>{classes[classId].workouts[workoutId].description}</Typography>
+                                <p className='text-sm'>{classes[classId].workouts[workoutId].description}</p>
                               </div>
                             )
                         )}
@@ -456,17 +459,17 @@ export const DashboardPage: React.FC = () => {
                     </div>
                   </div>
                 ))}
+              <Separator className='my-2' />
               <div className='flex justify-end gap-5'>
-                <Button variant='gradient' onClick={addClass}>
+                <Button onClick={addClass} size='lg'>
+                  <Plus className='h-4 w-4 mr-2' />
                   Add Class
                 </Button>
               </div>
-            </CardBody>
+            </CardContent>
           </Card>
         )}
       </div>
     </Layout>
   );
-};
-
-export default DashboardPage;
+}

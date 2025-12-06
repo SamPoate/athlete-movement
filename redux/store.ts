@@ -1,7 +1,6 @@
 import { combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { createWrapper } from 'next-redux-wrapper';
 import appSlice from './slices/appSlice';
 
 const reducers = {
@@ -29,5 +28,3 @@ export type RootState = ReturnType<typeof combinedReducer>;
 
 export const useTypedDispatch = () => useDispatch<AppDispatch>();
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
-
-export const wrapper = createWrapper<typeof store>(() => store, { debug: true });

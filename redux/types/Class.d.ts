@@ -8,6 +8,7 @@ interface IClassWorkout {
 
 interface IClass {
   name: string;
+  description?: string;
   published: boolean;
   created_at: FieldValue;
   updated_at?: FieldValue;
