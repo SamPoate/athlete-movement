@@ -71,3 +71,307 @@
 .grayscale {
   filter: grayscale(1);
 }
+
+/* Theme: Dark (default) */
+.theme-dark {
+  --theme-bg: #171717;
+  --theme-bg-secondary: #262626;
+  --theme-card-bg: rgba(23, 23, 23, 0.4);
+  --theme-accent: #facc15;
+  --theme-accent-secondary: #fef08a;
+  --theme-text: #ffffff;
+  --theme-text-muted: #a3a3a3;
+  --theme-border: rgba(64, 64, 64, 0.5);
+  --theme-divider: #facc15;
+  --theme-font: var(--font-inter), system-ui, sans-serif;
+  --theme-font-display: var(--font-inter), system-ui, sans-serif;
+}
+
+/* Theme: Midnight - Deep blue night sky */
+.theme-midnight {
+  --theme-bg: #0f0f1a;
+  --theme-bg-secondary: #1a1a2e;
+  --theme-card-bg: rgba(26, 26, 46, 0.6);
+  --theme-accent: #eab308;
+  --theme-accent-secondary: #fbbf24;
+  --theme-text: #e2e8f0;
+  --theme-text-muted: #94a3b8;
+  --theme-border: rgba(234, 179, 8, 0.2);
+  --theme-divider: linear-gradient(90deg, transparent, #eab308, transparent);
+  --theme-font: var(--font-rajdhani), system-ui, sans-serif;
+  --theme-font-display: var(--font-rajdhani), system-ui, sans-serif;
+}
+
+/* Theme: Neon - Cyberpunk */
+.theme-neon {
+  --theme-bg: #0a0a14;
+  --theme-bg-secondary: #141428;
+  --theme-card-bg: rgba(20, 20, 40, 0.6);
+  --theme-accent: #00ff88;
+  --theme-accent-secondary: #00ffff;
+  --theme-text: #ffffff;
+  --theme-text-muted: #8888ff;
+  --theme-border: rgba(0, 255, 136, 0.3);
+  --theme-divider: linear-gradient(90deg, transparent, #00ff88, #00ffff, transparent);
+  --theme-font: var(--font-orbitron), system-ui, sans-serif;
+  --theme-font-display: var(--font-orbitron), system-ui, sans-serif;
+}
+
+/* Theme: Retro 80s - Stranger Things vibe */
+.theme-retro {
+  --theme-bg: #1a0a1a;
+  --theme-bg-secondary: #2d0a2d;
+  --theme-card-bg: rgba(45, 10, 45, 0.6);
+  --theme-accent: #ff2a6d;
+  --theme-accent-secondary: #d300c5;
+  --theme-text: #fff1f1;
+  --theme-text-muted: #ff6b9d;
+  --theme-border: rgba(255, 42, 109, 0.4);
+  --theme-divider: linear-gradient(90deg, transparent, #ff2a6d, #d300c5, #05d9e8, transparent);
+  --theme-font: var(--font-bebas), system-ui, sans-serif;
+  --theme-font-display: var(--font-bebas), system-ui, sans-serif;
+}
+
+/* Theme: Vice City - Miami sunset vibes */
+.theme-vice {
+  --theme-bg: #1a1a2e;
+  --theme-bg-secondary: #16213e;
+  --theme-card-bg: rgba(22, 33, 62, 0.7);
+  --theme-accent: #f72585;
+  --theme-accent-secondary: #4cc9f0;
+  --theme-text: #ffffff;
+  --theme-text-muted: #7209b7;
+  --theme-border: rgba(247, 37, 133, 0.3);
+  --theme-divider: linear-gradient(90deg, transparent, #f72585, #b5179e, #7209b7, #4cc9f0, transparent);
+  --theme-font: var(--font-bebas), system-ui, sans-serif;
+  --theme-font-display: var(--font-bebas), system-ui, sans-serif;
+}
+
+/* Theme: Chinese New Year - Year of the Snake 2025 */
+.theme-cny {
+  --theme-bg: #8b0000;
+  --theme-bg-secondary: #b22222;
+  --theme-card-bg: rgba(139, 0, 0, 0.5);
+  --theme-accent: #ffd700;
+  --theme-accent-secondary: #ff6b35;
+  --theme-text: #fff8dc;
+  --theme-text-muted: #ffb347;
+  --theme-border: rgba(255, 215, 0, 0.4);
+  --theme-divider: linear-gradient(90deg, transparent, #ffd700, #ff6b35, #ffd700, transparent);
+  --theme-font: var(--font-rajdhani), system-ui, sans-serif;
+  --theme-font-display: var(--font-rajdhani), system-ui, sans-serif;
+}
+
+/* Theme: Barbie - Pink dream */
+.theme-barbie {
+  --theme-bg: #ff69b4;
+  --theme-bg-secondary: #ff1493;
+  --theme-card-bg: rgba(255, 20, 147, 0.4);
+  --theme-accent: #ffffff;
+  --theme-accent-secondary: #ffb6c1;
+  --theme-text: #ffffff;
+  --theme-text-muted: #ffe4e9;
+  --theme-border: rgba(255, 255, 255, 0.4);
+  --theme-divider: linear-gradient(90deg, transparent, #ffffff, #ffb6c1, #ffffff, transparent);
+  --theme-font: var(--font-inter), system-ui, sans-serif;
+  --theme-font-display: var(--font-inter), system-ui, sans-serif;
+}
+
+/* Theme: Vaporwave 90s - A E S T H E T I C */
+.theme-vaporwave {
+  --theme-bg: #2d1b4e;
+  --theme-bg-secondary: #1a1a2e;
+  --theme-card-bg: rgba(45, 27, 78, 0.6);
+  --theme-accent: #00fff9;
+  --theme-accent-secondary: #ff71ce;
+  --theme-text: #ffffff;
+  --theme-text-muted: #b967ff;
+  --theme-border: rgba(0, 255, 249, 0.3);
+  --theme-divider: linear-gradient(90deg, transparent, #ff71ce, #00fff9, #b967ff, transparent);
+  --theme-font: var(--font-orbitron), system-ui, sans-serif;
+  --theme-font-display: var(--font-orbitron), system-ui, sans-serif;
+}
+
+/* Theme: Matrix - Digital rain */
+.theme-matrix {
+  --theme-bg: #000000;
+  --theme-bg-secondary: #0a0a0a;
+  --theme-card-bg: rgba(0, 20, 0, 0.6);
+  --theme-accent: #00ff41;
+  --theme-accent-secondary: #008f11;
+  --theme-text: #00ff41;
+  --theme-text-muted: #008f11;
+  --theme-border: rgba(0, 255, 65, 0.3);
+  --theme-divider: #00ff41;
+  --theme-font: var(--font-orbitron), monospace;
+  --theme-font-display: var(--font-orbitron), monospace;
+}
+
+/* Workout animations */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-workout {
+  animation: fadeSlideIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+/* Quote rotation animation */
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; transform: translateY(5px); }
+  10%, 90% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-quote {
+  animation: fadeInOut 8s ease-in-out infinite;
+}
+
+/* Lantern sway animation */
+@keyframes lanternSway {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+.animate-lantern {
+  animation: lanternSway 3s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+/* Barbie sparkle animation */
+@keyframes sparkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.2); }
+}
+
+.animate-sparkle {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+/* Matrix rain effect */
+.matrix-rain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 65, 0.03) 2px,
+    rgba(0, 255, 65, 0.03) 4px
+  ),
+  repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 20px,
+    rgba(0, 255, 65, 0.05) 20px,
+    rgba(0, 255, 65, 0.05) 21px
+  );
+  animation: matrixScroll 20s linear infinite;
+}
+
+@keyframes matrixScroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 1000px; }
+}
+
+/* Matrix scanline overlay */
+.theme-matrix::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Theme utility classes */
+.theme-bg {
+  background-color: var(--theme-bg);
+}
+
+.theme-bg-secondary {
+  background-color: var(--theme-bg-secondary);
+}
+
+.theme-card-bg {
+  background-color: var(--theme-card-bg);
+}
+
+.theme-text {
+  color: var(--theme-text);
+}
+
+.theme-text-muted {
+  color: var(--theme-text-muted);
+}
+
+.theme-accent {
+  color: var(--theme-accent);
+}
+
+.theme-border {
+  border-color: var(--theme-border);
+}
+
+.theme-divider {
+  background: var(--theme-divider);
+}
+
+.theme-font {
+  font-family: var(--theme-font);
+}
+
+.theme-font-display {
+  font-family: var(--theme-font-display);
+}
+
+/* Retro glow effects - sharp neon */
+.theme-retro .retro-glow {
+  text-shadow: 2px 2px 0 #d300c5, -1px -1px 0 #ff2a6d;
+}
+
+.theme-retro .retro-title {
+  text-shadow: 2px 2px 0 currentColor;
+}
+
+/* Vice City glow */
+.theme-vice .retro-glow {
+  text-shadow: 2px 2px 0 #7209b7, -1px -1px 0 #4cc9f0;
+}
+
+.theme-vice .retro-title {
+  text-shadow: 2px 2px 0 #b5179e;
+}
+
+.theme-neon .neon-glow {
+  text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 40px #00ffff;
+}
+
+/* Vaporwave glow */
+.theme-vaporwave .retro-glow {
+  text-shadow: 2px 2px 0 #ff71ce, -1px -1px 0 #00fff9;
+}
+
+/* Matrix glow */
+.theme-matrix .retro-glow {
+  text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41;
+}

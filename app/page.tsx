@@ -6,7 +6,7 @@ import cn from 'classnames';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '@lib/firebase';
 import { useTypedDispatch, useTypedSelector } from '@redux/store';
-import { setCardId } from '@redux/slices/appSlice';
+import { setCardId, setTheme, Theme } from '@redux/slices/appSlice';
 import Container from '@components/Container';
 import Layout from '@components/Layout';
 import Card from '@components/Card';
@@ -22,6 +22,7 @@ export default function Home() {
 
   const cardId = useTypedSelector(state => state.app.cardId);
   const layout = useTypedSelector(state => state.app.layout);
+  const theme = useTypedSelector(state => state.app.theme);
 
   const dispatch = useTypedDispatch();
 
@@ -110,15 +111,28 @@ export default function Home() {
     return { color, image };
   };
 
+  const themes: { id: Theme; name: string; preview: string; icon: string }[] = [
+    { id: 'dark', name: 'Dark', preview: 'bg-neutral-800', icon: '🌙' },
+    { id: 'midnight', name: 'Midnight', preview: 'bg-[#0f0f1a]', icon: '✨' },
+    { id: 'neon', name: 'Neon', preview: 'bg-[#0a0a14]', icon: '💚' },
+    { id: 'retro', name: 'Retro', preview: 'bg-[#1a0a1a]', icon: '📼' },
+    { id: 'vice', name: 'Vice City', preview: 'bg-[#1a1a2e]', icon: '🌴' },
+    { id: 'cny', name: 'CNY', preview: 'bg-[#8b0000]', icon: '🏮' },
+    { id: 'barbie', name: 'Barbie', preview: 'bg-[#ff69b4]', icon: '💅' },
+    { id: 'vaporwave', name: '90s', preview: 'bg-[#2d1b4e]', icon: '💿' },
+    { id: 'matrix', name: 'Matrix', preview: 'bg-black', icon: '💊' }
+  ];
+
   const { color: cardColor, image: cardImage } = getClassStyles(classes.find(c => c.id === cardId)?.name);
 
   if (!cardId) {
     return (
       <Layout>
-        <Container className='flex justify-between items-start flex-wrap'>
-          {classes.length ? (
-            classes.map((item, index) => {
-              const { color, image } = getClassStyles(item.name);
+        <Container className='flex flex-col h-full'>
+          <div className='flex justify-between items-start flex-wrap flex-1'>
+            {classes.length ? (
+              classes.map((item, index) => {
+                const { color, image } = getClassStyles(item.name);
 
               if (!item.published) return null;
 
@@ -145,8 +159,27 @@ export default function Home() {
               );
             })
           ) : (
-            <p className='text-white text-center text-3xl w-full'>No classes found</p>
+            <p className='theme-text text-center text-3xl w-full'>No classes found</p>
           )}
+          </div>
+          <div className='flex justify-center gap-2 py-4 mt-auto'>
+            {themes.map(t => (
+              <button
+                key={t.id}
+                onClick={() => dispatch(setTheme(t.id))}
+                className={cn(
+                  'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all border',
+                  t.preview,
+                  theme === t.id 
+                    ? 'border-white/50 scale-105' 
+                    : 'border-transparent opacity-50 hover:opacity-80'
+                )}
+              >
+                <span>{t.icon}</span>
+                <span>{t.name}</span>
+              </button>
+            ))}
+          </div>
         </Container>
       </Layout>
     );
@@ -157,24 +190,28 @@ export default function Home() {
       <Card image={cardImage}>
         <div className='p-3'>
           <div className='flex justify-center'>
-            <h1 className={cn('font-bold text-6xl tracking-tight text-center mb-1 uppercase', cardColor)}>
+            <h1 className={cn('font-bold text-6xl tracking-tight text-center mb-1 uppercase retro-title', cardColor)}>
               {classes.find(c => c.id === cardId)?.name}
             </h1>
           </div>
-          <div className='h-0.5 bg-gradient-to-r from-transparent via-yellow-400 to-transparent mb-3' />
+          <div className='h-1 theme-divider mb-3' />
           {layout === 'list' ? (
             <ul className='space-y-2'>
               {workouts.map((workout, i) => {
                 if (workout.name || workout.description) {
                   return (
-                    <li key={i} className='bg-neutral-900/40 rounded-lg px-4 py-2'>
+                    <li 
+                      key={i} 
+                      className='animate-workout theme-card-bg rounded-lg px-4 py-2 border theme-border'
+                      style={{ animationDelay: `${i * 100}ms` }}
+                    >
                       <div className='flex items-start gap-6'>
                         <div className='w-1/3 shrink-0'>
-                          <p className='font-bold text-[3.5rem] leading-tight text-yellow-400 uppercase tracking-wide'>{workout.name}</p>
+                          <p className='font-bold text-[3.5rem] leading-tight theme-accent uppercase tracking-wide retro-glow'>{workout.name}</p>
                         </div>
                         <ul className='flex-1'>
                           {workout.description.split(/\r?\n/).map((item, index) => (
-                            <li key={index} className='font-medium text-[3.25rem] leading-tight text-white/95'>
+                            <li key={index} className='font-medium text-[3.25rem] leading-tight theme-text'>
                               {item}
                             </li>
                           ))}
@@ -190,21 +227,25 @@ export default function Home() {
               {workouts.map(
                 (workout, i) =>
                   (workout.name || workout.description) && (
-                    <li key={i} className='flex flex-col px-4 py-2 rounded-xl bg-neutral-900/50 border border-neutral-700/50'>
+                    <li 
+                      key={i} 
+                      className='animate-workout flex flex-col px-4 py-2 rounded-xl theme-card-bg border theme-border'
+                      style={{ animationDelay: `${i * 100}ms` }}
+                    >
                       <p
-                        className={cn('font-bold text-center mb-2 text-yellow-400 uppercase tracking-wide', {
+                        className={cn('font-bold text-center mb-2 theme-accent uppercase tracking-wide retro-glow', {
                           'text-[4rem] leading-tight': workouts.length < 5,
                           'text-[3.25rem] leading-tight': workouts.length >= 5
                         })}
                       >
                         {workout.name}
                       </p>
-                      <div className='h-0.5 bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent mb-2' />
+                      <div className='h-0.5 theme-divider mb-2' />
                       <ul>
                         {workout.description.split(/\r?\n/).map((item, index) => (
                           <li
                             key={index}
-                            className={cn('font-medium text-white/95', {
+                            className={cn('font-medium theme-text', {
                               'text-[4.5rem] leading-tight': workouts.length < 5,
                               'text-[3.5rem] leading-tight': workouts.length >= 5
                             })}
