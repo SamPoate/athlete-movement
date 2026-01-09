@@ -155,59 +155,58 @@ export default function Home() {
   return (
     <Layout>
       <Card image={cardImage}>
-        <div className='p-4'>
+        <div className='p-3'>
           <div className='flex justify-center'>
-            <h2 className={cn('font-semibold lg:text-7xl leading-none text-5xl text-center mb-5', cardColor)}>
+            <h1 className={cn('font-bold text-6xl tracking-tight text-center mb-1 uppercase', cardColor)}>
               {classes.find(c => c.id === cardId)?.name}
-            </h2>
+            </h1>
           </div>
-          <hr className='border-yellow-300 mb-4 mx-auto' />
+          <div className='h-0.5 bg-gradient-to-r from-transparent via-yellow-400 to-transparent mb-3' />
           {layout === 'list' ? (
-            <ul>
+            <ul className='space-y-2'>
               {workouts.map((workout, i) => {
                 if (workout.name || workout.description) {
                   return (
-                    <li key={i} className='mb-4'>
-                      <div className='flex items-center justify-between'>
-                        <div className='w-1/4 mr-16'>
-                          <p className='font-semibold text-[3.75rem] leading-[4rem]'>{workout.name}</p>
+                    <li key={i} className='bg-neutral-900/40 rounded-lg px-4 py-2'>
+                      <div className='flex items-start gap-6'>
+                        <div className='w-1/3 shrink-0'>
+                          <p className='font-bold text-[3.5rem] leading-tight text-yellow-400 uppercase tracking-wide'>{workout.name}</p>
                         </div>
-                        <ul className='w-3/4'>
+                        <ul className='flex-1'>
                           {workout.description.split(/\r?\n/).map((item, index) => (
-                            <li key={index} className='mb-2 font-semibold text-[4rem] leading-[5rem]'>
+                            <li key={index} className='font-medium text-[3.25rem] leading-tight text-white/95'>
                               {item}
                             </li>
                           ))}
                         </ul>
                       </div>
-                      <hr className='border-yellow-300 mt-5 mb-3 mx-5' />
                     </li>
                   );
                 }
               })}
             </ul>
           ) : (
-            <ul className='flex flex-wrap justify-between'>
+            <ul className='flex flex-wrap justify-center gap-3'>
               {workouts.map(
                 (workout, i) =>
                   (workout.name || workout.description) && (
-                    <li key={i} className='flex flex-col mb-4 mx-2 px-4 py-1 rounded-lg bg-neutral-800'>
+                    <li key={i} className='flex flex-col px-4 py-2 rounded-xl bg-neutral-900/50 border border-neutral-700/50'>
                       <p
-                        className={cn('font-semibold text-center mt-1 mb-2', {
-                          'text-[4.5rem] leading-[4.75rem]': workouts.length < 5,
-                          'text-[3.75rem] leading-[4rem]': workouts.length >= 5
+                        className={cn('font-bold text-center mb-2 text-yellow-400 uppercase tracking-wide', {
+                          'text-[4rem] leading-tight': workouts.length < 5,
+                          'text-[3.25rem] leading-tight': workouts.length >= 5
                         })}
                       >
                         {workout.name}
                       </p>
-                      <hr className='border-yellow-300 mx-5' />
+                      <div className='h-0.5 bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent mb-2' />
                       <ul>
                         {workout.description.split(/\r?\n/).map((item, index) => (
                           <li
                             key={index}
-                            className={cn('mb-2 font-semibold', {
-                              'text-[5rem] leading-[5.25rem]': workouts.length < 5,
-                              'text-[4rem] leading-[5rem]': workouts.length >= 5
+                            className={cn('font-medium text-white/95', {
+                              'text-[4.5rem] leading-tight': workouts.length < 5,
+                              'text-[3.5rem] leading-tight': workouts.length >= 5
                             })}
                           >
                             {item}

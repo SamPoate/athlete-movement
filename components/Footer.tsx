@@ -9,14 +9,10 @@ export const Footer: React.FC<FooterProps> = () => {
   const dispatch = useTypedDispatch();
 
   return (
-    <footer className='bg-neutral-700 z-10'>
-      <Container className='flex justify-between text-xs'>
-        <button className='flex-1 text-left' onClick={() => dispatch(setCardId(null))}>
-          Home
-        </button>
-        <p className='text-right flex-1'>
-          Sponsored By Sam
-        </p>
+    <footer className='bg-neutral-900/60 z-10 py-1'>
+      <Container className='flex justify-between items-center text-sm text-neutral-400'>
+        <button onClick={() => dispatch(setCardId(null))}>← Back</button>
+        <p>Sponsored By Sam</p>
       </Container>
     </footer>
   );
