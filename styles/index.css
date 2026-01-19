@@ -208,6 +208,19 @@
 }
 
 /* Workout animations */
+@keyframes ticker {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-200%);
+  }
+}
+
+.animate-ticker {
+  animation: ticker 15s linear forwards;
+}
+
 @keyframes fadeSlideIn {
   from {
     opacity: 0;
