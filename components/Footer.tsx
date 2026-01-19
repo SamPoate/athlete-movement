@@ -37,7 +37,10 @@ const quotes = [
   { text: 'Squats are just aggressive sitting.', author: 'Ben Glasscock' },
   { text: "I'm not sweating, I'm leaking awesome.", author: 'Ben Glasscock' },
   { text: "Deadlifts: because the floor isn't going to pick itself up.", author: 'Ben Glasscock' },
-  { text: 'Rest day? I thought you said chest day.', author: 'Kieran Littlejohn' },
+  {
+    text: "My gym crush just saw me struggle with the door. We're basically dating.",
+    author: 'Kieran Littlejohn'
+  },
   {
     text: "My warm-up is your workout. My workout is also my warm-up. I'm confused.",
     author: 'Kieran Littlejohn'
@@ -63,7 +66,11 @@ const quotes = [
   { text: "I've been here 2 hours and only done 3 exercises. Socialising is cardio.", author: 'Treadmill Terry' },
   { text: "Does anyone know where the muscles are? I can't find mine.", author: 'New Year Resolution Steve' },
   { text: "I'm not lost, I'm just warming up in the wrong room.", author: 'Confused Carol' },
-  { text: "That's not sweat, I just walked through someone's cloud.", author: 'Mirror Selfie Mike' }
+  { text: "That's not sweat, I just walked through someone's cloud.", author: 'Mirror Selfie Mike' },
+  {
+    text: 'These joggers have outlasted 3 relationships, 2 gym memberships, and my will to live.',
+    author: 'Gymshark Loyalty Programme: Platinum Member (1 Item)'
+  }
 ];
 
 interface FooterProps {}
