@@ -46,18 +46,37 @@ const quotes = [
     author: 'Kieran Littlejohn'
   },
   { text: 'Cardio is hardio, so I just lift things instead.', author: 'Kieran Littlejohn' },
-  { text: "You miss 100% of the lifts you don't attempt. You also miss some you do attempt.", author: 'Joe Mama' },
-  { text: 'The only BS I need is Burpees and Squats. Actually no, just the squats.', author: 'Joe Mama' },
-  { text: 'Sore today, even more sore tomorrow probably.', author: 'Joe Mama' },
-  { text: "I don't always go to the gym, but when I do, I make sure everyone knows.", author: 'Alex Fraser' },
-  { text: 'Leg day: because jeans should fear you.', author: 'Alex Fraser' },
-  { text: 'My protein shake brings all the gains to the yard.', author: 'Alex Fraser' },
+  {
+    text: "You miss 100% of the lifts you don't attempt. You also miss some you do attempt.",
+    author: 'Joe McLaughlan'
+  },
+  { text: 'The only BS I need is Burpees and Squats. Actually no, just the squats.', author: 'Joe McLauchlan' },
+  { text: 'Sore today, even more sore tomorrow probably.', author: 'Joe MacLachlan' },
+  { text: "I've seen your form. We need to talk.", author: 'Alex Fraser' },
+  {
+    text: 'Injury prevention is easy. Just do exactly what I say. Why is no one doing what I say?',
+    author: 'Alex Fraser'
+  },
+  {
+    text: 'I specialise in getting you back to the gym floor. I also specialise in judging how you got injured.',
+    author: 'Alex Fraser'
+  },
+  {
+    text: 'I represented Great Britain in powerlifting. Now I represent the snack cupboard at 2am.',
+    author: 'Ed Crossley'
+  },
+  {
+    text: "The gym floor has seen things. I have also seen things. We don't talk about it.",
+    author: 'Ed Crossley'
+  },
+  {
+    text: 'I speak three languages: English, gym grunts, and passive-aggressive plate reracking.',
+    author: 'Ed Crossley'
+  },
+  { text: "I don't count sets. I count moments of existential clarity between sets.", author: 'Ed Crossley' },
   { text: "I built this app instead of working out. That's basically the same thing.", author: 'Sam Poate' },
   { text: 'My code compiles and my squats are deep. One of those is a lie.', author: 'Sam Poate' },
-  {
-    text: '99 reps on the bar, 99 reps. Take one down, bang it out... 127 reps left somehow.',
-    author: 'Sam Poate'
-  },
+  { text: "I tell people I'm bulking. I've been bulking for 4 years.", author: 'Sam Poate' },
   { text: "I only came here to use the WiFi but now I'm doing burpees?", author: 'Dave from Accounting' },
   {
     text: 'Is this the heavy side or the light side? They both feel heavy.',
@@ -95,7 +114,7 @@ export const Footer: React.FC<FooterProps> = () => {
       <Container className='flex justify-between items-center text-sm theme-text-muted'>
         <button onClick={() => dispatch(setCardId(null))}>← Back</button>
         {cardId ? (
-          <p key={quoteIndex} className='animate-quote text-center text-white flex-1 mx-4'>
+          <p key={quoteIndex} className='animate-quote text-center font-semibold text-white flex-1 mx-4'>
             <span className='italic'>"{quotes[quoteIndex].text}"</span>
             <span className='ml-2 opacity-70'>- {quotes[quoteIndex].author}</span>
           </p>
